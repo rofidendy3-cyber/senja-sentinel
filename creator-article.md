@@ -39,3 +39,5 @@ Until then, our rule stands, and I would offer it to anyone giving an agent sign
 ---
 
 *Submitted to the zkVerify Agent Games — Creator Track. Companion piece to the Senja Sentinel Wildcard entry (same repository).*
+
+#AgentGames @ZKVProtocol
