@@ -1,0 +1,1 @@
+{"dependencies":{"snarkjs":"^0.7.6"},"description":"Proof Gatekeeper agent — Vercel Functions edition (proof returned inline, no on-chain submission)","engines":{"node":">=18"},"name":"senja-sentinel-gatekeeper-vercel","private":true,"scripts":{"test":"node test/harness.js"},"type":"module","version":"0.1.0"}
