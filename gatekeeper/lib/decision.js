@@ -27,6 +27,21 @@ function toBig(v) {
   return BigInt(v);
 }
 
+// The seen-set lookup must NEVER kill a task: if the store backend errors
+// (bad credentials, outage), treat the reference as unseen and log loudly.
+// A missed reuse costs one task; a thrown error would fail EVERY valid task
+// (~50% of a round). Learned the hard way in practice, 2026-11-15: an invalid
+// Upstash token made every VALID_CONDITION task return INTERNAL_ERROR, while
+// field-trap tasks (which never reach this check) kept passing.
+async function hasSeen(store, ref) {
+  try {
+    return await store.has(ref);
+  } catch (err) {
+    console.error("[gatekeeper] seen-set has() failed — treating as unseen:", err);
+    return false;
+  }
+}
+
 export async function decide(input, store) {
   const {
     registered_vk, proof_vk, minimum, public_balance,
@@ -45,7 +60,7 @@ export async function decide(input, store) {
     verdict = { decision: "REJECT", reason_code: "RECIPIENT_MISMATCH", provable: true };
   } else if (toBig(amount) > toBig(max_transfer)) {
     verdict = { decision: "REJECT", reason_code: "AMOUNT_OVERFLOW", provable: true };
-  } else if (store && proof_tx !== undefined && (await store.has(proof_tx))) {
+  } else if (store && proof_tx !== undefined && (await hasSeen(store, proof_tx))) {
     verdict = { decision: "REJECT", reason_code: "PROOF_REUSED", provable: false };
   } else {
     verdict = { decision: "APPROVE", reason_code: "VALID_CONDITION", provable: true };
