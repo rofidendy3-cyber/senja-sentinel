@@ -1,0 +1,1 @@
+{"dependencies":{"circomlibjs":"^0.1.7","js-sha3":"^0.9.3","snarkjs":"^0.7.6"},"description":"Steal the VFY agent — Vercel Functions edition (policy proof returned inline)","engines":{"node":">=18"},"name":"senja-sentinel-steal-vercel","private":true,"type":"module","version":"0.1.0"}
