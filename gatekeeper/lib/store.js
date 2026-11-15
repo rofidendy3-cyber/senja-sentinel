@@ -97,8 +97,8 @@ let storeSingleton = null;
 // the same contract as the local SeenSet (has = seen in a PREVIOUS task).
 export function getStore() {
   if (storeSingleton) return storeSingleton;
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if (url && token) {
     storeSingleton = new UpstashStore(url, token);
     console.log("[gatekeeper] seen-set backend: Upstash Redis (durable)");
